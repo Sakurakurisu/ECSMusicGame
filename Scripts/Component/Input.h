@@ -23,7 +23,7 @@ struct Input : public ecs::Component
 {
 	static const ecs::ComponentType _mType;
 
-	std::unordered_map<E_KeyCode, bool> keyStates; // 各キーの状態
+	std::unordered_map<E_KeyCode, bool> keyStates;
 
 	Input()
 	{

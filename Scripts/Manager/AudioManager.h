@@ -10,8 +10,8 @@ public:
 	AudioManager();
 	~AudioManager();
 
-	bool initialize();     // OpenAL を初期化する
-	void cleanup();        // OpenAL をクリーンアップする
+	bool initialize();
+	void cleanup();
 
 	void loadSound(const std::string& name, const std::string& filePath);
 	void playSound(const std::string& name);

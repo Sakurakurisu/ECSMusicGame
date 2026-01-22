@@ -19,7 +19,6 @@ public:
 		Direction& dir = mWorld.getComponentStore<Direction>().get(aEntity);
 		Position& pos = mWorld.getComponentStore<Position>().get(aEntity);
 
-		// 方向ベクトルとスピードから位置を更新
 		pos.x += (dir.vx) * speed.value * aDeltaTime;
 		pos.y += (dir.vy) * speed.value * aDeltaTime;
 	}

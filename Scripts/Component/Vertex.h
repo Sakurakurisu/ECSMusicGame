@@ -14,7 +14,7 @@ struct Vertex : public ecs::Component
 	// 右下
 	// 右上
 	// 左上
-	std::vector<GLfloat> vertices; // 頂点配列
+	std::vector<GLfloat> vertices;
 
 	Vertex(std::vector<GLfloat> aVertices) : vertices(aVertices) {}
 };

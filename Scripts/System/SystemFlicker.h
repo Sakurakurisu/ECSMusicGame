@@ -55,11 +55,9 @@ public:
 			}
 		}
 
-		// アルファ値を色に反映
 		color.A = flicker.currentAlpha;
 	}
 
-	// フリッカー効果を開始
 	void startFlicker(ecs::Entity aEntity) {
 		auto& flicker = mWorld.getComponentStore<Flicker>().get(aEntity);
 		flicker.isActive = true;

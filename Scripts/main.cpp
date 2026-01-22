@@ -845,7 +845,6 @@ DNA	DNA	180.48	5
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		// 更新所有实体
 		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 		{
 			audioManager.playBGM("assets/sounds/My Dearest.wav");

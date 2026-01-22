@@ -24,7 +24,7 @@ bool AudioManager::initialize() {
 		return false;
 	}
 
-	// 创建一个音源用于背景音乐
+	// BGM用ソースを生成
 	alGenSources(1, &bgmSource);
 	if (alGetError() != AL_NO_ERROR) {
 		std::cerr << "Failed to generate sources" << std::endl;
@@ -63,34 +63,32 @@ ALuint AudioManager::loadWAV(const std::string& filePath) {
 
 	char buffer[4];
 
-	// 读取并检查RIFF头
+	// WAVファイルヘッダ解析：RIFF → WAVE → fmt → data の順で検証
 	file.read(buffer, 4);
 	if (strncmp(buffer, "RIFF", 4) != 0) {
 		std::cerr << "Not a valid WAV file (missing RIFF header)" << std::endl;
 		return 0;
 	}
 
-	file.ignore(4); // 忽略文件大小信息
+	file.ignore(4); // ファイルサイズをスキップ
 
-	// 读取并检查WAVE头
 	file.read(buffer, 4);
 	if (strncmp(buffer, "WAVE", 4) != 0) {
 		std::cerr << "Not a valid WAV file (missing WAVE header)" << std::endl;
 		return 0;
 	}
 
-	// 读取并检查fmt子块
 	file.read(buffer, 4);
 	if (strncmp(buffer, "fmt ", 4) != 0) {
 		std::cerr << "Not a valid WAV file (missing fmt header)" << std::endl;
 		return 0;
 	}
 
-	file.ignore(4); // 忽略子块大小信息
+	file.ignore(4); // サブチャンクサイズをスキップ
 
 	short audioFormat;
 	file.read(reinterpret_cast<char*>(&audioFormat), sizeof(short));
-	if (audioFormat != 1) { // 只支持PCM格式
+	if (audioFormat != 1) { // PCMフォーマットのみ対応
 		std::cerr << "Unsupported WAV file format (not PCM)" << std::endl;
 		return 0;
 	}
@@ -101,22 +99,21 @@ ALuint AudioManager::loadWAV(const std::string& filePath) {
 	int sampleRate;
 	file.read(reinterpret_cast<char*>(&sampleRate), sizeof(int));
 
-	file.ignore(6); // 忽略ByteRate和BlockAlign
+	file.ignore(6); // ByteRate, BlockAlignをスキップ
 
 	short bitsPerSample;
 	file.read(reinterpret_cast<char*>(&bitsPerSample), sizeof(short));
 
-	// 查找data子块
+	// dataチャンクを探す（他のチャンクはスキップ）
 	while (true) {
-		file.read(buffer, 4); // 读取下一个子块标识符
+		file.read(buffer, 4);
 		if (strncmp(buffer, "data", 4) == 0) {
-			break; // 找到data块
+			break;
 		}
 		else {
-			//std::cerr << "Skipping non-data chunk: " << std::string(buffer, 4) << std::endl;
 			int chunkSize;
 			file.read(reinterpret_cast<char*>(&chunkSize), sizeof(int));
-			file.ignore(chunkSize); // 跳过当前块数据
+			file.ignore(chunkSize);
 		}
 	}
 
@@ -126,7 +123,7 @@ ALuint AudioManager::loadWAV(const std::string& filePath) {
 	std::vector<char> data(dataSize);
 	file.read(data.data(), dataSize);
 
-	// 创建OpenAL缓冲区并上传数据
+	// OpenALバッファを生成してデータを転送
 	ALuint bufferID;
 	alGenBuffers(1, &bufferID);
 	ALenum format;
@@ -148,7 +145,6 @@ ALuint AudioManager::loadWAV(const std::string& filePath) {
 		return 0;
 	}
 
-	// 调试输出
 	//std::cout << "Channels: " << channels << std::endl;
 	//std::cout << "Sample Rate: " << sampleRate << std::endl;
 	//std::cout << "Bits Per Sample: " << bitsPerSample << std::endl;

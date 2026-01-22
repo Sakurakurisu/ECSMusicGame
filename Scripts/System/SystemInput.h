@@ -15,8 +15,6 @@ public:
 	virtual void updateEntity(float aDeltaTime, ecs::Entity aEntity)
 	{
 		Input& input = mWorld.getComponentStore<Input>().get(aEntity);
-
-		// 各キーの現在の押下状態をGLFWから取得
 		input.keyStates[E_KeyCode::keyCodeDown_W] = glfwGetKey(Renderer::Instance().GetWindow(), GLFW_KEY_W) == GLFW_PRESS;
 		input.keyStates[E_KeyCode::keyCodeDown_A] = glfwGetKey(Renderer::Instance().GetWindow(), GLFW_KEY_A) == GLFW_PRESS;
 		input.keyStates[E_KeyCode::keyCodeDown_S] = glfwGetKey(Renderer::Instance().GetWindow(), GLFW_KEY_S) == GLFW_PRESS;

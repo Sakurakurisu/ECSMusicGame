@@ -15,9 +15,6 @@ public:
 	virtual void updateEntity(float aDeltaTime, ecs::Entity aEntity)
 	{
 		Timer& timer = mWorld.getComponentStore<Timer>().get(aEntity);
-
 		timer.accumulatedTime += aDeltaTime;
-
-		std::cout << timer.accumulatedTime << std::endl;
 	}
 };
